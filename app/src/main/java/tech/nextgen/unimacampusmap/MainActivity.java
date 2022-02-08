@@ -3,6 +3,10 @@ package tech.nextgen.unimacampusmap;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+
 import com.esri.arcgisruntime.ArcGISRuntimeEnvironment;
 import com.esri.arcgisruntime.mapping.ArcGISMap;
 import com.esri.arcgisruntime.mapping.BasemapStyle;
@@ -51,6 +55,44 @@ public class MainActivity extends AppCompatActivity {
     protected void onDestroy() {
         mMapView.dispose();
         super.onDestroy();
+    }@Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_file, menu);
+        return true;
+    }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        //Handle item selection
+        switch (item.getItemId()) {
+            case R.id.i1:
+                //perform any action;
+                return true;
+            case R.id.a:
+                //perform any action;
+                return true;
+            case R.id.b:
+                //perform any action;
+                return true;
+            case R.id.c:
+                //perform any action;
+                return true;
+            case R.id.d:
+                //perform any action;
+                return true;
+            case R.id.e:
+                //perform any action;
+                return true;
+            case R.id.f:
+                //perform any action;
+                return true;
+            case R.id.g:
+                //perform any action;
+                return true;
+
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
 }

@@ -3,4 +3,19 @@
     <string name="title_activity_splash_screen">SplashScreen</string>
     <string name="dummy_button">Dummy Button</string>
     <string name="dummy_content">DUMMY\nCONTENT</string>
+    <string name="unima_interactive_map">uni</string>
+    <string name="map">a</string>
+    <string name="my_places">b</string>
+    <string name="look_around">c</string>
+    <string name="ar_navigation_guidee">d</string>
+    <string name="settings">e</string>
+    <string name="help">f</string>
+    <string name="send_feedback">g</string>
+    <string name="mapp">Map</string>
+    <string name="my_placess">My Places</string>
+    <string name="look_aroundd">Look Around</string>
+    <string name="ar_navigation_guide">AR Navigation Guide</string>
+    <string name="settingss">Settings</string>
+    <string name="helpp">Help</string>
+    <string name="send_feedbackk">Send Feedback</string>
 </resources>
