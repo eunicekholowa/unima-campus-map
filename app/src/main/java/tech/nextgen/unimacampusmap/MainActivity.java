@@ -33,11 +33,11 @@ public class MainActivity extends AppCompatActivity {
         mMapView = findViewById(R.id.mapView);
 
         //create a map with topographic basemap
-        ArcGISMap map = new ArcGISMap(BasemapStyle.ARCGIS_TOPOGRAPHIC);
+        ArcGISMap map = new ArcGISMap(BasemapStyle.ARCGIS_STREETS);
 
         //set the map to be displayed in this view
         mMapView.setMap(map);
-        mMapView.setViewpoint(new Viewpoint( -15.3920597,35.3399277,10000));
+        mMapView.setViewpoint(new Viewpoint( -15.3860467,35.3359535,5000));
     }
     @Override
     protected void onPause(){
@@ -68,25 +68,25 @@ public class MainActivity extends AppCompatActivity {
             case R.id.i1:
                 //perform any action;
                 return true;
-            case R.id.a:
+            case R.id.mapMenu:
                 //perform any action;
                 return true;
-            case R.id.b:
+            case R.id.myPlacesMenu:
                 //perform any action;
                 return true;
-            case R.id.c:
+            case R.id.lookAroundMenu:
                 //perform any action;
                 return true;
-            case R.id.d:
+            case R.id.arNavMenu:
                 //perform any action;
                 return true;
-            case R.id.e:
+            case R.id.settingsMenu:
                 //perform any action;
                 return true;
-            case R.id.f:
+            case R.id.helpMenu:
                 //perform any action;
                 return true;
-            case R.id.g:
+            case R.id.sendFdbkMenu:
                 //perform any action;
                 return true;
 
