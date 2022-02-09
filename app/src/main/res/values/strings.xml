@@ -18,4 +18,8 @@
     <string name="settingss">Settings</string>
     <string name="helpp">Help</string>
     <string name="send_feedbackk">Send Feedback</string>
+    <string name="search_lebel">search lebel</string>
+    <string name="search_here">search here</string>
+    <string name="unima_interactive">UNIMA INTERACTIVE MAP</string>
+
 </resources>

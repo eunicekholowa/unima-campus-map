@@ -1,11 +1,11 @@
 package tech.nextgen.unimacampusmap;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.esri.arcgisruntime.ArcGISRuntimeEnvironment;
 import com.esri.arcgisruntime.mapping.ArcGISMap;
@@ -87,6 +87,9 @@ public class MainActivity extends AppCompatActivity {
                 //perform any action;
                 return true;
             case R.id.g:
+                //perform any action;
+                return true;
+            case R.id.h:
                 //perform any action;
                 return true;
 

@@ -1,11 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
     <item android:id="@+id/i1"
-        android:title="UNIMA INTERACTIVE MAP"
+        android:title="@string/unima_interactive"
         android:icon="@drawable/ic_baseline_menu_24" >
+
 
         <!-- "item" submenu -->
         <menu>
+            <item android:id="@+id/h"
+                android:title="@string/search_here"
+                android:icon="@drawable/ic_baseline_search_24"
+                app:showAsAction="collapseActionView|ifRoom"
+                app:actionViewClass="android.widget.SearchView" />
             <item android:id="@+id/a"
                 android:title="@string/mapp"
                 android:icon="@drawable/ic_baseline_map_24"/>
@@ -27,6 +34,7 @@
             <item android:id="@+id/g"
                 android:title="@string/send_feedbackk"
                 android:icon="@drawable/feedback" />
+
         </menu>
         <!-- Item -->
         <menu>
