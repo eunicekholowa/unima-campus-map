@@ -68,28 +68,28 @@ public class MainActivity extends AppCompatActivity {
             case R.id.i1:
                 //perform any action;
                 return true;
-            case R.id.a:
+            case R.id.map:
                 //perform any action;
                 return true;
-            case R.id.b:
+            case R.id.places:
                 //perform any action;
                 return true;
-            case R.id.c:
+            case R.id.look:
                 //perform any action;
                 return true;
-            case R.id.d:
+            case R.id.navbar:
                 //perform any action;
                 return true;
-            case R.id.e:
+            case R.id.settings:
                 //perform any action;
                 return true;
-            case R.id.f:
+            case R.id.help:
                 //perform any action;
                 return true;
-            case R.id.g:
+            case R.id.feedback:
                 //perform any action;
                 return true;
-            case R.id.h:
+            case R.id.search:
                 //perform any action;
                 return true;
 

@@ -8,30 +8,30 @@
 
         <!-- "item" submenu -->
         <menu>
-            <item android:id="@+id/h"
+            <item android:id="@+id/search"
                 android:title="@string/search_here"
                 android:icon="@drawable/ic_baseline_search_24"
                 app:showAsAction="collapseActionView|ifRoom"
                 app:actionViewClass="android.widget.SearchView" />
-            <item android:id="@+id/a"
+            <item android:id="@+id/map"
                 android:title="@string/mapp"
                 android:icon="@drawable/ic_baseline_map_24"/>
-            <item android:id="@+id/b"
+            <item android:id="@+id/places"
                 android:title="@string/my_placess"
                 android:icon="@drawable/ic_baseline_my_location_24" />
-            <item android:id="@+id/c"
+            <item android:id="@+id/look"
                 android:title="@string/look_aroundd"
                 android:icon="@drawable/ic_baseline_view_carousel_24"/>
-            <item android:id="@+id/d"
+            <item android:id="@+id/navbar"
                 android:title="@string/ar_navigation_guide"
                 android:icon="@drawable/ic_baseline_navigation_24" />
-            <item android:id="@+id/e"
+            <item android:id="@+id/settings"
                 android:title="@string/settingss"
                 android:icon="@drawable/ic_baseline_settings_24" />
-            <item android:id="@+id/f"
+            <item android:id="@+id/help"
                 android:title="@string/helpp"
                 android:icon="@drawable/ic_baseline_help_outline_24"/>
-            <item android:id="@+id/g"
+            <item android:id="@+id/feedback"
                 android:title="@string/send_feedbackk"
                 android:icon="@drawable/feedback" />
 
