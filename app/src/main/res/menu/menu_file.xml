@@ -3,7 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
     <item android:id="@+id/i1"
         android:title="@string/unima_interactive"
-        android:icon="@drawable/ic_baseline_menu_24" >
+        android:icon="@drawable/ic_baseline_menu_24">
 
 
         <!-- "item" submenu -->

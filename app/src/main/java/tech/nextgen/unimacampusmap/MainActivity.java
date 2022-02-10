@@ -1,27 +1,48 @@
 package tech.nextgen.unimacampusmap;
 
+import static tech.nextgen.unimacampusmap.R.id;
+import static tech.nextgen.unimacampusmap.R.layout;
+
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ImageView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.esri.arcgisruntime.ArcGISRuntimeEnvironment;
 import com.esri.arcgisruntime.mapping.ArcGISMap;
 import com.esri.arcgisruntime.mapping.BasemapStyle;
 import com.esri.arcgisruntime.mapping.Viewpoint;
 import com.esri.arcgisruntime.mapping.view.MapView;
+import com.google.android.material.navigation.NavigationView;
 
 public class MainActivity extends AppCompatActivity {
 
     private MapView mMapView;
+    private ImageView imageView;
+    private NavigationView navigationView;
+    DrawerLayout drawerLayout;
     
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(layout.activity_main);
+        imageView = findViewById(id.menu);
+        navigationView = findViewById(id.nav_view);
+        drawerLayout = findViewById(id.drawer_layout);
+
+        imageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                drawerLayout.openDrawer(GravityCompat.START);
+            }
+        });
 
         /*
         authentication with API key required to access basemap services
@@ -30,7 +51,7 @@ public class MainActivity extends AppCompatActivity {
         ArcGISRuntimeEnvironment.setApiKey("AAPKae2e0e4cb2814af49d6346db0343b8f9NyzRssRkbMgKM_Oc-amCwMPW__5G4lDx9CTq4dP3T7vXSpLv1uM22fr7t50GNn-a");
 
         //inflate map view from layout
-        mMapView = findViewById(R.id.mapView);
+        mMapView = findViewById(id.mapView);
 
         //create a map with topographic basemap
         ArcGISMap map = new ArcGISMap(BasemapStyle.ARCGIS_TOPOGRAPHIC);
@@ -38,6 +59,9 @@ public class MainActivity extends AppCompatActivity {
         //set the map to be displayed in this view
         mMapView.setMap(map);
         mMapView.setViewpoint(new Viewpoint( -15.3920597,35.3399277,10000));
+        
+
+
     }
     @Override
     protected void onPause(){
@@ -61,35 +85,36 @@ public class MainActivity extends AppCompatActivity {
         inflater.inflate(R.menu.menu_file, menu);
         return true;
     }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         //Handle item selection
         switch (item.getItemId()) {
-            case R.id.i1:
+            case id.i1:
                 //perform any action;
                 return true;
-            case R.id.map:
+            case id.map:
                 //perform any action;
                 return true;
-            case R.id.places:
+            case id.places:
                 //perform any action;
                 return true;
-            case R.id.look:
+            case id.look:
                 //perform any action;
                 return true;
-            case R.id.navbar:
+            case id.navbar:
                 //perform any action;
                 return true;
-            case R.id.settings:
+            case id.settings:
                 //perform any action;
                 return true;
-            case R.id.help:
+            case id.help:
                 //perform any action;
                 return true;
-            case R.id.feedback:
+            case id.feedback:
                 //perform any action;
                 return true;
-            case R.id.search:
+            case id.search:
                 //perform any action;
                 return true;
 

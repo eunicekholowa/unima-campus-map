@@ -17,6 +17,11 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.UnimaCampusMap">
         <activity
+            android:name=".navigation_drawer"
+            android:exported="false"
+            android:label="@string/title_activity_navigation_drawer"
+            android:theme="@style/Theme.UnimaCampusMap.NoActionBar" />
+        <activity
             android:name=".Map"
             android:exported="true" />
         <activity
