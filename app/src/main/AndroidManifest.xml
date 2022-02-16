@@ -3,6 +3,8 @@
     package="tech.nextgen.unimacampusmap">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 
     <uses-feature
         android:glEsVersion="0x00020000"
@@ -21,7 +23,6 @@
             android:exported="true"
             android:label="@string/title_activity_drawer"
             android:theme="@style/Theme.UnimaCampusMap.NoActionBar" />
-
         <activity
             android:name=".OnBoarding"
             android:exported="true" />
@@ -30,8 +31,11 @@
             android:exported="true" />
         <activity
             android:name=".MainActivity"
+            android:configChanges="keyboard|keyboardHidden|orientation"
             android:exported="true" />
-        <activity android:name=".SplashScreen">
+        <activity
+            android:name=".SplashScreen"
+            android:theme="@style/Theme.UnimaCampusMap.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <action android:name="android.intent.action.SEARCH" />

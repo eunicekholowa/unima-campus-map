@@ -17,4 +17,9 @@
     <string name="menu_home">Home</string>
     <string name="menu_gallery">Gallery</string>
     <string name="menu_slideshow">Slideshow</string>
+    <string name="location_permission_denied">LocationManager failed to load because permission was denied</string>
+    <string name="service_layer_url">http://gisserver.domain.com:6080/arcgis/rest/services/folder/service/FeatureServer</string>
+    <string name="feature_added">Feature added</string>
+    <string name="error_applying_edits">Error applying edits</string>
+    <string name="error_cannot_add_to_feature_table">Error cannot add to feature table</string>
 </resources>
