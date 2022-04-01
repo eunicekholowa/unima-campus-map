@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:id="@+id/app_bar_drawer"
-        android:title="UNIMA INTERACTIVE MAP"
-        android:icon="@drawable/ic_baseline_menu_24" >
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+  >
+
 
         <!-- "item" submenu -->
-        <menu>
+            <group>
             <item android:id="@+id/mapMenu"
                 android:title="@string/map"
                 android:icon="@drawable/ic_baseline_map_24"/>
@@ -21,19 +21,14 @@
             <item android:id="@+id/settingsMenu"
                 android:title="@string/settings"
                 android:icon="@drawable/ic_baseline_settings_24" />
+            </group>
+
+            <item android:title="Communicate">
+                <menu>
             <item android:id="@+id/helpMenu"
                 android:title="@string/help"
                 android:icon="@drawable/ic_baseline_help_outline_24"/>
             <item android:id="@+id/sendFdbkMenu"
                 android:title="@string/send_feedback"
-                android:icon="@drawable/feedback" />
-        </menu>
-        <!-- Item -->
-        <menu>
-
-        </menu>
-
-    </item>
-
-
+                android:icon="@drawable/feedback" /></menu></item>
 </menu>

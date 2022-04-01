@@ -16,12 +16,13 @@
         <item android:id="@+id/arNavMenu"
             android:title="@string/ar_navigation_guide"
             android:icon="@drawable/ic_baseline_navigation_24" />
-    </group>
-    <group android:checkableBehavior="single"
-        android:title="Communicate">
         <item android:id="@+id/settingsMenu"
             android:title="@string/settings"
             android:icon="@drawable/ic_baseline_settings_24" />
+    </group>
+    <group android:checkableBehavior="single"
+        android:title="@string/communicate">
+
         <item android:id="@+id/helpMenu"
             android:title="@string/help"
             android:icon="@drawable/ic_baseline_help_outline_24"/>
