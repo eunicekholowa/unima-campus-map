@@ -15,12 +15,17 @@
         <entry key="..\:/Users/bsc_40_16/AndroidStudioProjects/unima-campus-map/app/src/main/res/drawable/locationdisplayon.xml" value="0.28888888888888886" />
         <entry key="..\:/Users/bsc_40_16/AndroidStudioProjects/unima-campus-map/app/src/main/res/drawable/locationdisplayrecenter.xml" value="0.28888888888888886" />
         <entry key="..\:/Users/bsc_40_16/AndroidStudioProjects/unima-campus-map/app/src/main/res/drawable/my_location.xml" value="0.35260416666666666" />
+        <entry key="..\:/Users/bsc_40_16/AndroidStudioProjects/unima-campus-map/app/src/main/res/drawable/selector.xml" value="0.1295" />
+        <entry key="..\:/Users/bsc_40_16/AndroidStudioProjects/unima-campus-map/app/src/main/res/layout/activity_ar.xml" value="0.18811881188118812" />
         <entry key="..\:/Users/bsc_40_16/AndroidStudioProjects/unima-campus-map/app/src/main/res/layout/activity_drawer.xml" value="0.1" />
         <entry key="..\:/Users/bsc_40_16/AndroidStudioProjects/unima-campus-map/app/src/main/res/layout/activity_look_around.xml" value="0.2788288288288288" />
-        <entry key="..\:/Users/bsc_40_16/AndroidStudioProjects/unima-campus-map/app/src/main/res/layout/activity_main.xml" value="0.1" />
+        <entry key="..\:/Users/bsc_40_16/AndroidStudioProjects/unima-campus-map/app/src/main/res/layout/activity_main.xml" value="0.22" />
+        <entry key="..\:/Users/bsc_40_16/AndroidStudioProjects/unima-campus-map/app/src/main/res/layout/activity_main_ar_navigate.xml" value="0.2861111111111111" />
         <entry key="..\:/Users/bsc_40_16/AndroidStudioProjects/unima-campus-map/app/src/main/res/layout/activity_map.xml" value="0.25" />
         <entry key="..\:/Users/bsc_40_16/AndroidStudioProjects/unima-campus-map/app/src/main/res/layout/activity_on_boarding.xml" value="0.33645833333333336" />
+        <entry key="..\:/Users/bsc_40_16/AndroidStudioProjects/unima-campus-map/app/src/main/res/layout/activity_splash_screen.xml" value="0.18802083333333333" />
         <entry key="..\:/Users/bsc_40_16/AndroidStudioProjects/unima-campus-map/app/src/main/res/layout/app_bar_drawer.xml" value="0.15" />
+        <entry key="..\:/Users/bsc_40_16/AndroidStudioProjects/unima-campus-map/app/src/main/res/layout/callout.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/bsc_40_16/AndroidStudioProjects/unima-campus-map/app/src/main/res/layout/content_drawer.xml" value="0.14722222222222223" />
         <entry key="..\:/Users/bsc_40_16/AndroidStudioProjects/unima-campus-map/app/src/main/res/layout/content_main.xml" value="0.25" />
         <entry key="..\:/Users/bsc_40_16/AndroidStudioProjects/unima-campus-map/app/src/main/res/layout/drawer_header.xml" value="0.25" />
@@ -31,6 +36,9 @@
         <entry key="..\:/Users/bsc_40_16/AndroidStudioProjects/unima-campus-map/app/src/main/res/layout/fragment_places_item_list.xml" value="0.3013513513513513" />
         <entry key="..\:/Users/bsc_40_16/AndroidStudioProjects/unima-campus-map/app/src/main/res/layout/fragment_slideshow.xml" value="0.15315315315315314" />
         <entry key="..\:/Users/bsc_40_16/AndroidStudioProjects/unima-campus-map/app/src/main/res/layout/item_places_list.xml" value="0.25" />
+        <entry key="..\:/Users/bsc_40_16/AndroidStudioProjects/unima-campus-map/app/src/main/res/layout/layout_calibration_controls.xml" value="0.36666666666666664" />
+        <entry key="..\:/Users/bsc_40_16/AndroidStudioProjects/unima-campus-map/app/src/main/res/layout/map_chooser.xml" value="0.36666666666666664" />
+        <entry key="..\:/Users/bsc_40_16/AndroidStudioProjects/unima-campus-map/app/src/main/res/layout/map_preview.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/bsc_40_16/AndroidStudioProjects/unima-campus-map/app/src/main/res/layout/nav_activity_main.xml" value="0.1" />
         <entry key="..\:/Users/bsc_40_16/AndroidStudioProjects/unima-campus-map/app/src/main/res/layout/nav_header_drawer.xml" value="0.1" />
         <entry key="..\:/Users/bsc_40_16/AndroidStudioProjects/unima-campus-map/app/src/main/res/layout/spinner_layout.xml" value="0.2871111111111111" />
@@ -38,6 +46,8 @@
         <entry key="..\:/Users/bsc_40_16/AndroidStudioProjects/unima-campus-map/app/src/main/res/menu/activity_main_drawer.xml" value="0.22" />
         <entry key="..\:/Users/bsc_40_16/AndroidStudioProjects/unima-campus-map/app/src/main/res/menu/drawer.xml" value="0.18" />
         <entry key="..\:/Users/bsc_40_16/AndroidStudioProjects/unima-campus-map/app/src/main/res/menu/drawer_menu.xml" value="0.2861111111111111" />
+        <entry key="..\:/Users/bsc_40_16/AndroidStudioProjects/unima-campus-map/app/src/main/res/menu/map_preview_list.xml" value="0.36666666666666664" />
+        <entry key="..\:/Users/bsc_40_16/AndroidStudioProjects/unima-campus-map/app/src/main/res/menu/menu.xml" value="0.18802083333333333" />
         <entry key="..\:/Users/bsc_40_16/AndroidStudioProjects/unima-campus-map/app/src/main/res/menu/menu_file.xml" value="0.22" />
         <entry key="..\:/Users/bsc_40_16/AndroidStudioProjects/unima-campus-map/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.2927927927927928" />
         <entry key="..\:/Users/bsc_40_16/Desktop/UnimaCampusMap/app/src/main/res/layout/activity_main.xml" value="0.17147922998986828" />

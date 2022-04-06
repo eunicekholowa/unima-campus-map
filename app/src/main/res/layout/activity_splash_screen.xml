@@ -32,7 +32,7 @@
         android:textSize="25sp"
         android:fontFamily="@font/sf_bold"
         android:letterSpacing=".25"
-        android:textColor="@color/default_color"
+        android:textColor="@color/colorPrimary"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/app_logo"

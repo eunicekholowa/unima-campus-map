@@ -1,310 +1,429 @@
 package tech.nextgen.unimacampusmap;
 
-import androidx.appcompat.app.AppCompatActivity;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.concurrent.ExecutionException;
 
-import android.os.Bundle;
-
-
-
-import static android.content.ContentValues.TAG;
-import static android.os.Build.VERSION_CODES.S;
-
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
-
-import android.Manifest;
-import android.annotation.SuppressLint;
 import android.content.Intent;
-import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.MotionEvent;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.Spinner;
-
+import android.widget.TextView;
 import android.widget.Toast;
 
-import com.esri.arcgisruntime.ArcGISRuntimeEnvironment;
+import androidx.appcompat.app.AppCompatActivity;
 import com.esri.arcgisruntime.concurrent.ListenableFuture;
-import com.esri.arcgisruntime.data.Feature;
-import com.esri.arcgisruntime.data.FeatureEditResult;
-import com.esri.arcgisruntime.data.ServiceFeatureTable;
 import com.esri.arcgisruntime.geometry.Point;
-import com.esri.arcgisruntime.layers.FeatureLayer;
+import com.esri.arcgisruntime.loadable.LoadStatus;
 import com.esri.arcgisruntime.mapping.ArcGISMap;
-import com.esri.arcgisruntime.mapping.BasemapStyle;
-import com.esri.arcgisruntime.mapping.Viewpoint;
+import com.esri.arcgisruntime.mapping.MobileMapPackage;
+import com.esri.arcgisruntime.mapping.view.Callout;
 import com.esri.arcgisruntime.mapping.view.DefaultMapViewOnTouchListener;
-import com.esri.arcgisruntime.mapping.view.LocationDisplay;
+import com.esri.arcgisruntime.mapping.view.Graphic;
+import com.esri.arcgisruntime.mapping.view.GraphicsOverlay;
+import com.esri.arcgisruntime.mapping.view.IdentifyGraphicsOverlayResult;
 import com.esri.arcgisruntime.mapping.view.MapView;
+import com.esri.arcgisruntime.symbology.CompositeSymbol;
+import com.esri.arcgisruntime.symbology.SimpleLineSymbol;
+import com.esri.arcgisruntime.symbology.SimpleMarkerSymbol;
+import com.esri.arcgisruntime.symbology.Symbol;
+import com.esri.arcgisruntime.symbology.TextSymbol;
+import com.esri.arcgisruntime.tasks.geocode.GeocodeResult;
+import com.esri.arcgisruntime.tasks.geocode.LocatorTask;
+import com.esri.arcgisruntime.tasks.geocode.ReverseGeocodeParameters;
+import com.esri.arcgisruntime.tasks.networkanalysis.Route;
+import com.esri.arcgisruntime.tasks.networkanalysis.RouteParameters;
+import com.esri.arcgisruntime.tasks.networkanalysis.RouteResult;
+import com.esri.arcgisruntime.tasks.networkanalysis.RouteTask;
+import com.esri.arcgisruntime.tasks.networkanalysis.Stop;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.concurrent.ExecutionException;
-
-import tech.nextgen.unimacampusmap.spinner.ItemData;
-import tech.nextgen.unimacampusmap.spinner.SpinnerAdapter;
-
+/**
+ * This class demonstrates offline functionality through the use of a mobile map package (mmpk).
+ * <p>
+ * This (main) activity handles:
+ * loading of map package,
+ * loading of maps and map previews from map packages,
+ * searching (ie reverse geocoding), and
+ * routing.
+ */
 public class MapActivity extends AppCompatActivity {
-
+    private static final String TAG = MainActivity.class.getSimpleName();
+    private GraphicsOverlay mMarkerGraphicsOverlay;
+    private GraphicsOverlay mRouteGraphicsOverlay;
+    private RouteTask mRouteTask;
+    private RouteParameters mRouteParameters;
+    private ArrayList<MapPreview> mMapPreviews = new ArrayList<>();
+    private MobileMapPackage mMobileMapPackage;
     private MapView mMapView;
-    private LocationDisplay mLocationDisplay;
-    private Spinner mSpinner;
-
-    private final int requestCode = 2;
-    private final String[] reqPermissions = { Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission
-            .ACCESS_COARSE_LOCATION };
-
-    private ServiceFeatureTable mServiceFeatureTable;
+    private String mMMPkTitle;
+    private LocatorTask mLocatorTask;
+    private Callout mCallout;
+    private ReverseGeocodeParameters mReverseGeocodeParameters;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_map);
-
-        // authentication with an API key or named user is required to access basemaps and other
-        // location services
-        ArcGISRuntimeEnvironment.setApiKey("AAPKae2e0e4cb2814af49d6346db0343b8f9NyzRssRkbMgKM_Oc-amCwMPW__5G4lDx9CTq4dP3T7vXSpLv1uM22fr7t50GNn-a");
-
-        // Get the Spinner from layout
-        mSpinner = findViewById(R.id.spinner);
-
-        // Get the MapView from layout and set a map with the BasemapType Imagery
-        mMapView = findViewById(R.id.mapView);
-        ArcGISMap map = new ArcGISMap(BasemapStyle.OSM_STANDARD);
-
-        //set the map to be displayed in this view
-        mMapView.setMap(map);
-        mMapView.setViewpoint(new Viewpoint( -15.3897, 35.3370,7000));
-
-
-        // get the MapView's LocationDisplay
-        mLocationDisplay = mMapView.getLocationDisplay();
-
-        // Listen to changes in the status of the location data source.
-        mLocationDisplay.addDataSourceStatusChangedListener(dataSourceStatusChangedEvent -> {
-
-            // If LocationDisplay started OK, then continue.
-            if (dataSourceStatusChangedEvent.isStarted())
-                return;
-
-            // No error is reported, then continue.
-            if (dataSourceStatusChangedEvent.getError() == null)
-                return;
-
-            // If an error is found, handle the failure to start.
-            // Check permissions to see if failure may be due to lack of permissions.
-            boolean permissionCheck1 = ContextCompat.checkSelfPermission(this, reqPermissions[0]) ==
-                    PackageManager.PERMISSION_GRANTED;
-            boolean permissionCheck2 = ContextCompat.checkSelfPermission(this, reqPermissions[1]) ==
-                    PackageManager.PERMISSION_GRANTED;
-
-            if (!(permissionCheck1 && permissionCheck2)) {
-                // If permissions are not already granted, request permission from the user.
-                ActivityCompat.requestPermissions(this, reqPermissions, requestCode);
-            } else {
-                // Report other unknown failure types to the user - for example, location services may not
-                // be enabled on the device.
-                String message = String.format("Error in DataSourceStatusChangedListener: %s", dataSourceStatusChangedEvent
-                        .getSource().getLocationDataSource().getError().getMessage());
-                Toast.makeText(this, message, Toast.LENGTH_LONG).show();
-
-                // Update UI to reflect that the location display did not actually start
-                mSpinner.setSelection(0, true);
-            }
-        });
-
-        // Populate the list for the Location display options for the spinner's Adapter
-        ArrayList<ItemData> list = new ArrayList<>();
-        list.add(new ItemData("Stop", R.drawable.locationdisplaydisabled));
-        list.add(new ItemData("On", R.drawable.locationdisplayon));
-        list.add(new ItemData("Re-Center", R.drawable.locationdisplayrecenter));
-        list.add(new ItemData("Navigation", R.drawable.locationdisplaynavigation));
-        list.add(new ItemData("Compass", R.drawable.locationdisplayheading));
-
-        SpinnerAdapter adapter = new SpinnerAdapter(this, R.layout.spinner_layout, R.id.txt, list);
-        mSpinner.setAdapter(adapter);
-        mSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-
-                switch (position) {
-                    case 0:
-                        // Stop Location Display
-                        if (mLocationDisplay.isStarted())
-                            mLocationDisplay.stop();
-                        break;
-                    case 1:
-                        // Start Location Display
-                        if (!mLocationDisplay.isStarted())
-                            mLocationDisplay.startAsync();
-                        break;
-                    case 2:
-                        // Re-Center MapView on Location
-                        // AutoPanMode - Default: In this mode, the MapView attempts to keep the location symbol on-screen by
-                        // re-centering the location symbol when the symbol moves outside a "wander extent". The location symbol
-                        // may move freely within the wander extent, but as soon as the symbol exits the wander extent, the MapView
-                        // re-centers the map on the symbol.
-                        mLocationDisplay.setAutoPanMode(LocationDisplay.AutoPanMode.RECENTER);
-                        if (!mLocationDisplay.isStarted())
-                            mLocationDisplay.startAsync();
-                        break;
-                    case 3:
-                        // Start Navigation Mode
-                        // This mode is best suited for in-vehicle navigation.
-                        mLocationDisplay.setAutoPanMode(LocationDisplay.AutoPanMode.NAVIGATION);
-                        if (!mLocationDisplay.isStarted())
-                            mLocationDisplay.startAsync();
-                        break;
-                    case 4:
-                        // Start Compass Mode
-                        // This mode is better suited for waypoint navigation when the user is walking.
-                        mLocationDisplay.setAutoPanMode(LocationDisplay.AutoPanMode.COMPASS_NAVIGATION);
-                        if (!mLocationDisplay.isStarted())
-                            mLocationDisplay.startAsync();
-                        break;
-                }
-
-            }
-
-
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-            }
-
-        });
-        mServiceFeatureTable = new ServiceFeatureTable(getString(R.string.service_layer_url));
-
-        // create a feature layer from table
-        FeatureLayer featureLayer = new FeatureLayer(mServiceFeatureTable);
-
-        // add the layer to the map
-        map.getOperationalLayers().add(featureLayer);
-
-        // add a listener to the MapView to detect when a user has performed a single tap to add a new feature to
-        // the service feature table
+        setContentView(R.layout.activity_main);
+        // initialize reverse geocode params
+        mReverseGeocodeParameters = new ReverseGeocodeParameters();
+        mReverseGeocodeParameters.setMaxResults(1);
+        mReverseGeocodeParameters.getResultAttributeNames().add("*");
+        // retrieve the MapView from layout
+        mMapView = (MapView) findViewById(R.id.mapView);
+        // add route and marker overlays to map view
+        mMarkerGraphicsOverlay = new GraphicsOverlay();
+        mRouteGraphicsOverlay = new GraphicsOverlay();
+        mMapView.getGraphicsOverlays().add(mRouteGraphicsOverlay);
+        mMapView.getGraphicsOverlays().add(mMarkerGraphicsOverlay);
+        // add the map from the mobile map package to the MapView
+        loadMobileMapPackage(getExternalFilesDir(null) + getString(R.string.unima_mmpk));
         mMapView.setOnTouchListener(new DefaultMapViewOnTouchListener(this, mMapView) {
-            @Override public boolean onSingleTapConfirmed(MotionEvent event) {
-                // create a point from where the user clicked
-                android.graphics.Point point = new android.graphics.Point((int) event.getX(), (int) event.getY());
 
-                // create a map point from a point
-                Point mapPoint = mMapView.screenToLocation(point);
-
-                // add a new feature to the service feature table
-                addFeature(mapPoint, mServiceFeatureTable);
-                return super.onSingleTapConfirmed(event);
-            }
-        });
-
-    }
-
-    /**
-     * Adds a new Feature to a ServiceFeatureTable and applies the changes to the
-     * server.
-     *
-     * @param mapPoint     location to add feature
-     * @param featureTable service feature table to add feature
-     */
-    private void addFeature(Point mapPoint, final ServiceFeatureTable featureTable) {
-
-        // create default attributes for the feature
-        Map<String, Object> attributes = new HashMap<>();
-        attributes.put("typdamage", "Destroyed");
-        attributes.put("primcause", "Earthquake");
-
-        // creates a new feature using default attributes and point
-        Feature feature = featureTable.createFeature(attributes, mapPoint);
-
-        // check if feature can be added to feature table
-        if (featureTable.canAdd()) {
-            // add the new feature to the feature table and to server
-            featureTable.addFeatureAsync(feature).addDoneListener(() -> applyEdits(featureTable));
-        } else {
-            runOnUiThread(() -> logToUser(true, getString(R.string.error_cannot_add_to_feature_table)));
-        }
-    }
-
-    /**
-     * Sends any edits on the ServiceFeatureTable to the server.
-     *
-     * @param featureTable service feature table
-     */
-    @SuppressLint("StringFormatInvalid")
-    private void applyEdits(ServiceFeatureTable featureTable) {
-
-        // apply the changes to the server
-        final ListenableFuture<List<FeatureEditResult>> editResult = featureTable.applyEditsAsync();
-        editResult.addDoneListener(() -> {
-            try {
-                List<FeatureEditResult> editResults = null;
-                try {
-                    editResults = editResult.get();
-                } catch (ExecutionException e) {
-                    e.printStackTrace();
-                }
-                // check if the server edit was successful
-                if (editResults != null && !editResults.isEmpty()) {
-                    if (!editResults.get(0).hasCompletedWithErrors()) {
-                        runOnUiThread(() -> logToUser(false, getString(R.string.feature_added)));
-                    } else {
-                        throw editResults.get(0).getError();
-                    }
-                }
-            } catch (InterruptedException e) {
-                runOnUiThread(() -> logToUser(true, getString(R.string.error_applying_edits, e.getCause().getMessage())));
+            @Override
+            public boolean onSingleTapConfirmed(MotionEvent motionEvent) {
+                // get the point that was clicked and convert it to a point in map coordinates
+                android.graphics.Point screenPoint = new android.graphics.Point(Math.round(motionEvent.getX()), Math.round(motionEvent.getY()));
+                // create a map point from screen point
+                Point mapPoint = mMapView.screenToLocation(screenPoint);
+                geoView(screenPoint, mapPoint);
+                return true;
             }
         });
     }
-
-    /**
-     * Shows a Toast to user and logs to logcat.
-     *
-     * @param isError whether message is an error. Determines log level.
-     * @param message message to display
-     */
-    private void logToUser(boolean isError, String message) {
-        Toast.makeText(this, message, Toast.LENGTH_LONG).show();
-        if (isError) {
-            Log.e(TAG, message);
-        } else {
-            Log.d(TAG, message);
-        }
-    }
-
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        // If request is cancelled, the result arrays are empty.
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-            // Location permission was granted. This would have been triggered in response to failing to start the
-            // LocationDisplay, so try starting this again.
-            mLocationDisplay.startAsync();
-        } else {
-            // If permission was denied, show toast to inform user what was chosen. If LocationDisplay is started again,
-            // request permission UX will be shown again, option should be shown to allow never showing the UX again.
-            // Alternative would be to disable functionality so request is not shown again.
-            Toast.makeText(this, getString(R.string.location_permission_denied), Toast.LENGTH_SHORT).show();
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // create button in action bar to allow user to access MapChooserActivity
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.map_preview_list, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
 
-            // Update UI to reflect that the location display did not actually start
-            mSpinner.setSelection(0, true);
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        final int MAP_CHOSEN_RESULT = 1;
+        Intent mapChooserIntent = new Intent(getApplicationContext(), MapChooserActivity.class);
+        // pass the list of mapPreviews
+        mapChooserIntent.putExtra("map_previews", mMapPreviews);
+        // pass the mobile map package title
+        mapChooserIntent.putExtra("MMPk_title", mMMPkTitle);
+        // start MapChooserActivity to determine user's chosen map number
+        startActivityForResult(mapChooserIntent, MAP_CHOSEN_RESULT);
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (data != null) {
+            // get the map number chosen in MapChooserActivity and load that map
+            int mapNum = data.getIntExtra("map_num", -1);
+            loadMap(mapNum);
+            // dismiss any callout boxes
+            if (mCallout != null) {
+                mCallout.dismiss();
+            }
+            // clear any existing graphics
+            mMarkerGraphicsOverlay.getGraphics().clear();
+            mRouteGraphicsOverlay.getGraphics().clear();
         }
+        super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    /**
+     * Loads a mobile map package and map previews.
+     *
+     * @param path to location of mobile map package on device
+     */
+    private void loadMobileMapPackage(String path) {
+        // create the mobile map package
+        mMobileMapPackage = new MobileMapPackage(path);
+        // load the mobile map package asynchronously
+        mMobileMapPackage.loadAsync();
+        // add done listener which will load when package has maps
+        mMobileMapPackage.addDoneLoadingListener(() -> {
+            // check load status and that the mobile map package has maps
+            if (mMobileMapPackage.getLoadStatus() == LoadStatus.LOADED && !mMobileMapPackage.getMaps().isEmpty()) {
+                mLocatorTask = mMobileMapPackage.getLocatorTask();
+                // default to display of first map in package
+                loadMap(0);
+                loadMapPreviews();
+            } else {
+                String error = "Mobile map package failed to load: " + mMobileMapPackage.getLoadError().getMessage();
+                Log.e(TAG, error);
+                Toast.makeText(this, error, Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    /**
+     * Loads map from the mobile map package for a given index.
+     *
+     * @param mapNum index of map in mobile map package
+     */
+    private void loadMap(int mapNum) {
+        ArcGISMap map = mMobileMapPackage.getMaps().get(mapNum);
+        // check if the map contains transport networks
+        if (map.getTransportationNetworks().isEmpty()) {
+            // only allow routing on map with transport networks
+            mRouteTask = null;
+        } else {
+            mRouteTask = new RouteTask(this, map.getTransportationNetworks().get(0));
+            try {
+                mRouteParameters = mRouteTask.createDefaultParametersAsync().get();
+            } catch (ExecutionException | InterruptedException e) {
+                String error = "Error creating route task default parameters: " + e.getMessage();
+                Log.e(TAG, error);
+                Toast.makeText(this, error, Toast.LENGTH_SHORT).show();
+            }
+        }
+        mMapView.setMap(map);
+    }
+
+    /**
+     * Generates and populates the map preview models from information in the mobile map package.
+     */
+    private void loadMapPreviews() {
+        // set mobile map package title
+        mMMPkTitle = mMobileMapPackage.getItem().getTitle();
+        // for each map in the mobile map package, pull out relevant thumbnail information
+        for (int i = 0; i < mMobileMapPackage.getMaps().size(); i++) {
+            ArcGISMap currMap = mMobileMapPackage.getMaps().get(i);
+            final MapPreview mapPreview = new MapPreview();
+            // set map number
+            mapPreview.setMapNum(i);
+            // set map title. If null use the index of the list of maps to name each map Map #
+            if (currMap.getItem() != null && currMap.getItem().getTitle() != null) {
+                mapPreview.setTitle(currMap.getItem().getTitle());
+            } else {
+                mapPreview.setTitle("Map " + i);
+            }
+            // set map description. If null use package description instead
+            if (currMap.getItem() != null && currMap.getItem().getDescription() != null) {
+                mapPreview.setDesc(currMap.getItem().getDescription());
+            } else {
+                mapPreview.setDesc(mMobileMapPackage.getItem().getDescription());
+            }
+            // check if map has transport data
+            if (!currMap.getTransportationNetworks().isEmpty()) {
+                mapPreview.setTransportNetwork(true);
+            }
+            // check if map has geocoding data
+            if (mMobileMapPackage.getLocatorTask() != null) {
+                mapPreview.setGeocoding(true);
+            }
+            // set map preview thumbnail
+            final ListenableFuture<byte[]> thumbnailAsync;
+            if (currMap.getItem() != null && currMap.getItem().fetchThumbnailAsync() != null) {
+                thumbnailAsync = currMap.getItem().fetchThumbnailAsync();
+            } else {
+                thumbnailAsync = mMobileMapPackage.getItem().fetchThumbnailAsync();
+            }
+            thumbnailAsync.addDoneListener(() -> {
+                if (thumbnailAsync.isDone()) {
+                    try {
+                        mapPreview.setThumbnailByteStream(thumbnailAsync.get());
+                        mMapPreviews.add(mapPreview);
+                    } catch (InterruptedException | ExecutionException e) {
+                        String error = "Error getting thumbnail: " + e.getMessage();
+                        Log.e(TAG, error);
+                        Toast.makeText(this, error, Toast.LENGTH_LONG).show();
+                    }
+                }
+            });
+        }
+    }
+
+    /**
+     * Defines a graphic symbol which represents geocoded locations.
+     *
+     * @return the stop graphic
+     */
+    private SimpleMarkerSymbol simpleSymbolForStopGraphic() {
+        SimpleMarkerSymbol simpleMarkerSymbol = new SimpleMarkerSymbol(
+                SimpleMarkerSymbol.Style.CIRCLE, Color.RED, 12);
+        simpleMarkerSymbol.setLeaderOffsetY(5);
+        return simpleMarkerSymbol;
+    }
+
+    /**
+     * Defines a composite symbol consisting of the SimpleMarkerSymbol and a text symbol
+     * representing the index of a stop in a route.
+     *
+     * @param simpleMarkerSymbol a SimpleMarkerSymbol which represents the background of the
+     *                           composite symbol
+     * @param index              number which corresponds to the stop number in a route
+     * @return the composite symbol
+     */
+    private CompositeSymbol compositeSymbolForStopGraphic(SimpleMarkerSymbol simpleMarkerSymbol, Integer index) {
+        TextSymbol textSymbol = new TextSymbol(12, index.toString(), Color.BLACK,
+                TextSymbol.HorizontalAlignment.CENTER, TextSymbol.VerticalAlignment.MIDDLE);
+        List<Symbol> compositeSymbolList = new ArrayList<>();
+        compositeSymbolList.addAll(Arrays.asList(simpleMarkerSymbol, textSymbol));
+        return new CompositeSymbol(compositeSymbolList);
+    }
+
+    /**
+     * For a given point, returns a graphic.
+     *
+     * @param point           map point
+     * @param isIndexRequired true if used in a route
+     * @param index           stop number in a route
+     * @return a Graphic at point with either a simple or composite symbol
+     */
+    private Graphic graphicForPoint(Point point, boolean isIndexRequired, Integer index) {
+        // make symbol composite if an index is required
+        Symbol symbol;
+        if (isIndexRequired && index != null) {
+            symbol = compositeSymbolForStopGraphic(simpleSymbolForStopGraphic(), index);
+        } else {
+            symbol = simpleSymbolForStopGraphic();
+        }
+        return new Graphic(point, symbol);
+    }
+
+    /**
+     * Shows the callout for a given graphic.
+     *
+     * @param graphic     the graphic selected by the user
+     * @param tapLocation the location selected at a Point
+     */
+    private void showCalloutForGraphic(Graphic graphic, Point tapLocation) {
+        TextView calloutTextView = (TextView) getLayoutInflater().inflate(R.layout.callout, null);
+        calloutTextView.setText(graphic.getAttributes().get("Match_addr").toString());
+        mCallout = mMapView.getCallout();
+        mCallout.setLocation(tapLocation);
+        mCallout.setContent(calloutTextView);
+        mCallout.show();
+    }
+
+    /**
+     * Adds a graphic at a given point to GraphicsOverlay in the MapView. If RouteTask is not null
+     * get index for stop symbol. If identifyGraphicsOverlayAsync returns no graphics, call
+     * reverseGeocode and route, otherwise just call reverseGeocode.
+     *
+     * @param screenPoint point on the screen which the user selected
+     * @param mapPoint    point on the map which the user selected
+     */
+    private void geoView(android.graphics.Point screenPoint, final Point mapPoint) {
+        if (mRouteTask != null || mLocatorTask != null) {
+            if (mRouteTask == null) {
+                mMarkerGraphicsOverlay.getGraphics().clear();
+            }
+            final ListenableFuture<IdentifyGraphicsOverlayResult> identifyGraphicsResult =
+                    mMapView.identifyGraphicsOverlayAsync(mMarkerGraphicsOverlay, screenPoint, 12, false);
+            identifyGraphicsResult.addDoneListener(() -> {
+                try {
+                    Graphic graphic;
+                    if (identifyGraphicsResult.isDone() && identifyGraphicsResult.get().getGraphics().isEmpty()) {
+                        if (mRouteTask != null) {
+                            int index = mMarkerGraphicsOverlay.getGraphics().size() + 1;
+                            graphic = graphicForPoint(mapPoint, true, index);
+                        } else {
+                            graphic = graphicForPoint(mapPoint, false, null);
+                        }
+                        mMarkerGraphicsOverlay.getGraphics().add(graphic);
+                        reverseGeocode(mapPoint, graphic);
+                        route();
+                    } else if (identifyGraphicsResult.isDone()) {
+                        // if graphic exists within screenPoint tolerance, show callout information of clicked graphic
+                        reverseGeocode(mapPoint, identifyGraphicsResult.get().getGraphics().get(0));
+                    }
+                } catch (Exception e) {
+                    String error = "Error getting identify graphics result: " + e.getMessage();
+                    Log.e(TAG, error);
+                    Toast.makeText(this, error, Toast.LENGTH_LONG).show();
+                }
+            });
+        }
+    }
+
+    /**
+     * Calls reverseGeocode on a Locator Task and, if there is a result, passes the result to a
+     * method which shows callouts.
+     *
+     * @param point   user generated map point
+     * @param graphic used for marking the point on which the user touched
+     */
+    private void reverseGeocode(final Point point, final Graphic graphic) {
+        if (mLocatorTask != null) {
+            final ListenableFuture<List<GeocodeResult>> results =
+                    mLocatorTask.reverseGeocodeAsync(point, mReverseGeocodeParameters);
+            results.addDoneListener(() -> {
+                try {
+                    List<GeocodeResult> geocodeResult = results.get();
+                    if (geocodeResult.isEmpty()) {
+                        // no result was found
+                        mMapView.getCallout().dismiss();
+                    } else {
+                        graphic.getAttributes().put("Match_addr", geocodeResult.get(0).getLabel());
+                        showCalloutForGraphic(graphic, point);
+                    }
+                } catch (InterruptedException | ExecutionException e) {
+                    String error = "Error getting geocode result: " + e.getMessage();
+                    Log.e(TAG, error);
+                    Toast.makeText(this, error, Toast.LENGTH_LONG).show();
+                }
+            });
+        }
+    }
+
+    /**
+     * Uses the last two markers drawn to calculate a route between them.
+     */
+    private void route() {
+        if (mMarkerGraphicsOverlay.getGraphics().size() > 1 && mRouteParameters != null) {
+            // create stops for last and second to last graphic
+            int size = mMarkerGraphicsOverlay.getGraphics().size();
+            List<Graphic> graphics = new ArrayList<>();
+            Graphic lastGraphic = mMarkerGraphicsOverlay.getGraphics().get(size - 1);
+            graphics.add(lastGraphic);
+            Graphic secondLastGraphic = mMarkerGraphicsOverlay.getGraphics().get(size - 2);
+            graphics.add(secondLastGraphic);
+            // add stops to the parameters
+            mRouteParameters.setStops(stopsForGraphics(graphics));
+            final ListenableFuture<RouteResult> routeResult = mRouteTask.solveRouteAsync(mRouteParameters);
+            routeResult.addDoneListener(() -> {
+                try {
+                    Route route = routeResult.get().getRoutes().get(0);
+                    Graphic routeGraphic = new Graphic(route.getRouteGeometry(),
+                            new SimpleLineSymbol(
+                                    SimpleLineSymbol.Style.SOLID, Color.BLUE, 5.0f));
+                    mRouteGraphicsOverlay.getGraphics().add(routeGraphic);
+                } catch (InterruptedException | ExecutionException e) {
+                    String error = "Error getting route result: " + e.getMessage();
+                    Log.e(TAG, error);
+                    Toast.makeText(this, error, Toast.LENGTH_LONG).show();
+                    // if routing is interrupted, remove last graphic
+                    mMarkerGraphicsOverlay.getGraphics().remove(mMarkerGraphicsOverlay.getGraphics().size() - 1);
+                }
+            });
+        }
+    }
+
+    /**
+     * Converts a given list of graphics into a list of stops.
+     *
+     * @param graphics to be converted to stops
+     * @return a list of stops
+     */
+    private List<Stop> stopsForGraphics(List<Graphic> graphics) {
+        List<Stop> stops = new ArrayList<>();
+        for (Graphic graphic : graphics) {
+            Stop stop = new Stop((Point) graphic.getGeometry());
+            stops.add(stop);
+        }
+        return stops;
     }
 
     @Override
     protected void onPause() {
-        super.onPause();
         mMapView.pause();
+        super.onPause();
     }
 
     @Override
@@ -315,45 +434,7 @@ public class MapActivity extends AppCompatActivity {
 
     @Override
     protected void onDestroy() {
-        super.onDestroy();
         mMapView.dispose();
+        super.onDestroy();
     }
-
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        //Handle item selection
-        switch (item.getItemId()) {
-            case R.id.drawer:
-                //perform any action;
-                return true;
-            //open main app page
-            case R.id.mapMenu:
-                Intent mapIntent = new Intent(this,MainActivity.class);
-                startActivity(mapIntent);
-
-            case R.id.myPlacesMenu:
-                Intent myPlacesIntent = new Intent(this,MyPlaces.class);
-                startActivity(myPlacesIntent);
-
-            case R.id.lookAroundMenu:
-                Intent lookAroundIntent = new Intent(this, LookAroundActivity.class);
-            case R.id.arNavMenu:
-                //perform any action;
-                return true;
-            case R.id.settingsMenu:
-                //perform any action;
-                return true;
-            case R.id.helpMenu:
-                //perform any action;
-                return true;
-            case R.id.sendFdbkMenu:
-                //perform any action;
-                return true;
-
-            default:
-                return super.onOptionsItemSelected(item);
-        }
-    }
-
 }

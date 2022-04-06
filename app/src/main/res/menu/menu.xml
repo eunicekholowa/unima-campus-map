@@ -23,12 +23,5 @@
                 android:icon="@drawable/ic_baseline_settings_24" />
             </group>
 
-            <item android:title="Communicate">
-                <menu>
-            <item android:id="@+id/helpMenu"
-                android:title="@string/help"
-                android:icon="@drawable/ic_baseline_help_outline_24"/>
-            <item android:id="@+id/sendFdbkMenu"
-                android:title="@string/send_feedback"
-                android:icon="@drawable/feedback" /></menu></item>
+
 </menu>
