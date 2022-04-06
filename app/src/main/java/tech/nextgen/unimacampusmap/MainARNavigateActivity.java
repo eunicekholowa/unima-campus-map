@@ -92,7 +92,7 @@ public class MainARNavigateActivity extends AppCompatActivity {
             return true;
 
           case R.id.lookAroundMenu:
-            startActivity(new Intent(getApplicationContext(), LookAroundActivity.class));
+            startActivity(new Intent(getApplicationContext(), FindRoute.class));
             overridePendingTransition(0,0);
             return true;
 
