@@ -100,7 +100,7 @@ class FindRoute : AppCompatActivity() {
             // set the map on the map view
             this.map = map
 
-            setViewpoint(Viewpoint(-15.3895 ,35.3373, 144447.638572))
+            setViewpoint(Viewpoint(-15.3895 ,35.3373, 12500.20392))
 
             graphicsOverlays.add(graphicsOverlay)
 

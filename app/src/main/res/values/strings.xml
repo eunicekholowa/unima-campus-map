@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">Unima Campus Map</string>
     <string name="map">Map</string>
-    <string name="my_places">My Places</string>
+    <string name="my_places">Places</string>
     <string name="look_around">Look Around</string>
     <string name="settings">Settings</string>
     <string name="help">Help</string>
@@ -17,7 +17,7 @@
     <string name="menu_home">Home</string>
     <string name="menu_gallery">Gallery</string>
     <string name="menu_slideshow">Slideshow</string>
-    <string name="service_layer_url">http://gisserver.domain.com:6080/arcgis/rest/services/folder/service/FeatureServer</string>
+    <string name="service_layer_url" translatable="false">http://gisserver.domain.com:6080/arcgis/rest/services/folder/service/FeatureServer</string>
     <string name="feature_added">Feature added</string>
     <string name="error_applying_edits">Error applying edits</string>
     <string name="error_cannot_add_to_feature_table">Error cannot add to feature table</string>
@@ -30,6 +30,16 @@
     <string name="has_geotag">Geotags on</string>
     <string name="no_geotag">Geotag off</string>
     <string name="chooseMap">Choose Map</string>
+
+    <string name="export_tiles_text">Export Tiles</string>
+    <string name="close_button_text">Close</string>
+    <string name="preview_text">Preview</string>
+
+
+    <string name="take_map_offline">Take map offline</string>
+    <string name="portal_url">https://www.arcgis.com</string>
+    <string name="item_id">acc027394bc84c2fb04d1ed317aac674</string>
+
 
     <string name="service_loading_message">Preparing services…</string>
     <string name="place_start_message">Tap to set a start point</string>

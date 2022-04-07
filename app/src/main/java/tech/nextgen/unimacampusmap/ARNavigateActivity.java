@@ -104,9 +104,9 @@ public class ARNavigateActivity extends AppCompatActivity {
     mArView.getSceneView().getGraphicsOverlays().add(routeOverlay);
     Graphic routeGraphic = new Graphic(sRouteResult.getRoutes().get(0).getRouteGeometry());
     routeOverlay.getGraphics().add(routeGraphic);
-    // display the graphic 3 meters above the ground
+    // display the graphic 2 meters above the ground
     routeOverlay.getSceneProperties().setSurfacePlacement(LayerSceneProperties.SurfacePlacement.RELATIVE);
-    routeOverlay.getSceneProperties().setAltitudeOffset(3);
+    routeOverlay.getSceneProperties().setAltitudeOffset(2);
     // create a renderer for the route geometry
     SolidStrokeSymbolLayer strokeSymbolLayer = new SolidStrokeSymbolLayer(1, Color.YELLOW, new LinkedList<>(),
         StrokeSymbolLayer.LineStyle3D.TUBE);
