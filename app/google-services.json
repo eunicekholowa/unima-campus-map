@@ -1,0 +1,68 @@
+{
+  "project_info": {
+    "project_number": "457538733263",
+    "project_id": "unima-campus-map",
+    "storage_bucket": "unima-campus-map.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:457538733263:android:45a24231852e9b6cdfe3ba",
+        "android_client_info": {
+          "package_name": "com.nextgen.unimacampusmap"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "457538733263-ooe362n4ucnl4rsslh4m4r0l2ur3b50m.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBCcxJW5mYgndNo0aM_w9JJBg-FzC3k3fY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "457538733263-ooe362n4ucnl4rsslh4m4r0l2ur3b50m.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:457538733263:android:db86c23ec7dd2456dfe3ba",
+        "android_client_info": {
+          "package_name": "tech.nextgen.unimacampusmap"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "457538733263-ooe362n4ucnl4rsslh4m4r0l2ur3b50m.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBCcxJW5mYgndNo0aM_w9JJBg-FzC3k3fY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "457538733263-ooe362n4ucnl4rsslh4m4r0l2ur3b50m.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

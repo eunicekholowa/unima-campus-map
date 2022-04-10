@@ -87,12 +87,12 @@ public class MainARNavigateActivity extends AppCompatActivity {
             return true;
 
           case R.id.mapMenu:
-            startActivity(new Intent(getApplicationContext(), MapActivity.class));
+            startActivity(new Intent(getApplicationContext(), MainActivity.class));
             overridePendingTransition(0, 0);
             return true;
 
           case R.id.lookAroundMenu:
-            startActivity(new Intent(getApplicationContext(), FindRoute.class));
+            startActivity(new Intent(getApplicationContext(), LookAroundActivity.class));
             overridePendingTransition(0,0);
             return true;
 
@@ -101,12 +101,7 @@ public class MainARNavigateActivity extends AppCompatActivity {
             overridePendingTransition(0,0);
             return true;
 
-          case R.id.settingsMenu:
-            startActivity(new Intent(getApplicationContext(), Settings.class));
-            overridePendingTransition(0,0);
-            return true;
-
-        }
+             }
 
         return false;
       }

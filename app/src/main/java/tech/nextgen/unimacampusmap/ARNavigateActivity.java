@@ -106,7 +106,7 @@ public class ARNavigateActivity extends AppCompatActivity {
     routeOverlay.getGraphics().add(routeGraphic);
     // display the graphic 2 meters above the ground
     routeOverlay.getSceneProperties().setSurfacePlacement(LayerSceneProperties.SurfacePlacement.RELATIVE);
-    routeOverlay.getSceneProperties().setAltitudeOffset(2);
+    routeOverlay.getSceneProperties().setAltitudeOffset(3);
     // create a renderer for the route geometry
     SolidStrokeSymbolLayer strokeSymbolLayer = new SolidStrokeSymbolLayer(1, Color.YELLOW, new LinkedList<>(),
         StrokeSymbolLayer.LineStyle3D.TUBE);

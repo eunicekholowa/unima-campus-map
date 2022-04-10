@@ -61,5 +61,7 @@
     <string name="world_routing_service_url">https://route-api.arcgis.com/arcgis/rest/services/World/Route/NAServer/Route_World</string>
     <string name="location_permission_denied">Location permissions required to plan your route!</string>
     <string name="navigate_ar_permission_denied">Camera permissions are required for navigation in AR!</string>
+    <string name="buildings_at_university_of_malawi">Buildings at University of Malawi</string>
+    <string name="buildings">Image of building</string>
 
 </resources>

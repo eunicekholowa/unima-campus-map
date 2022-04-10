@@ -12,7 +12,7 @@ import androidx.appcompat.app.AppCompatActivity;
 public class SplashScreen extends AppCompatActivity {
 
     //splashscreen timer
-    private static int TIME_OUT = 3000;
+    private static int TIME_OUT = 1500;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
